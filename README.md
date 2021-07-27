@@ -1,6 +1,6 @@
 # useReducer-practice
 
-存取這種多欄位資料
+存取這種多欄位資料，能夠紀錄先前的值
 
 用dispatch可在同一頁面同時進行當前值的：
 
