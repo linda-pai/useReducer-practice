@@ -1,17 +1,10 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import './Expert.scss';
-import BreadCrumb from '../../Components/BreadCrumb';
-import ComfirmAlert from '../../Components/ComfirmAlert';
 import { withRouter, useHistory, useLocation } from 'react-router-dom';
-import SideBtn from '../../Components/SideBtn';
 import { pad, clickLogout } from '../../utils/Functions';
-import { useCookies } from "react-cookie";
 import greenMan from "../../images1/greenMan/greenMan.png";
 import greenFood from '../../images1/common/greenFood.png';
-import greenTour from '../../images1/common/greenTour.png';
-import greenHome from '../../images1/common/greenHome.png';
-import greenShopping from '../../images1/common/greenShopping.png';
-import greenOffice from '../../images1/common/greenOffice.png';
+
 
 function init(initialData) {
     return initialData
@@ -32,58 +25,7 @@ function reducer(state, action) {
 
 function FoodScore(props, initialData) {
 
-    let history = useHistory()
-    const [greenlifeCookies, setGreenlifeCookies, removeCookie] = useCookies([]);
-    const collector = sessionStorage.getItem("userGuid") || "";
-    const memberToken = greenlifeCookies.refreshToken || "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2MjU3MzcwMDEsIm5iZiI6MTYyNTczNTIwMSwiaXNzIjoiZ3JlZW5saWZlIiwiYXVkIjoiZ3JlZW5saWZlIiwic3ViIjoiM2UyMTY5MDQtZjA0Mi00NjY4LTliNzQtNTZmZTZhZDdkNDhjIn0.aURoKw2w-OQdSRqe6S5wuwXwMa28rB3W4pHrhP_TQCsq1Ozed76uAdt26U4GrGTBGKGogJImnc70jKr8zdJUFA";
-
-    var myHeaders = new Headers({
-        "Content-Type": "application/json; charset=utf-8",
-        "Token": memberToken
-    });
-
-    var serialize = require('serialize-javascript');
-
-    const params = new URLSearchParams(history.location.search);
-    const [themeId, setThemeId] = useState(params.get('theme'));
-
-    //alert提醒視窗顯示
-    const [showDialog, setShowDialog] = useState(false);
-    const [alertTitle, setAlertTitle] = useState("");
-
     const [state, dispatch] = useReducer(reducer, initialData, init)
-    console.log(state)
-
-
-    //抓URL改變,例如上一頁(history.push)
-    const location = useLocation();
-    useEffect(() => {
-        setThemeId(params.get('theme'))
-    }, [location]);
-
-
-    //我的綠積分任務-常態性任務-里程碑任務-主題特殊任務
-    const [titleData, setTitleData] = useState([]);
-    useEffect(() => {
-        if (themeId)
-            fetch(`${props.SSL}//${props.domain}/api/api/Expert/Score/Titles/${themeId}`, {
-                method: 'GET',
-                headers: myHeaders
-            }).then(res => {
-                if (res.status === 401) {
-                    clickLogout(removeCookie, collector)
-                    throw new Error(res.statusText);
-                } else {
-                    return res.json();
-                }
-            }).then(result => {
-                if (result.isSucess)
-                    console.log(result)
-                setTitleData(result.resultObject)
-            })
-
-    }, [themeId])
-
 
     const submit = () => {
         setShowDialog(true)
@@ -114,7 +56,6 @@ function FoodScore(props, initialData) {
             .then(res => {
                 return res.json();
             }).then(result => {
-                console.log(result)
                 if (result.isSucess) {
                     setShowDialog(true)
                     setAlertTitle("成功提交！")
@@ -142,10 +83,6 @@ function FoodScore(props, initialData) {
 
     }, [themeId])
 
-    // //點閱計數API
-    // useEffect(() => {
-    //     clickRecord("F20ABEC7-B05E-408A-A44B-D81A4A9ADB6E", "4", collector)
-    // }, [collector]);
 
     const TableData = (
         <>
@@ -196,21 +133,6 @@ function FoodScore(props, initialData) {
 
     return (
         <>
-            {showDialog &&
-                <ComfirmAlert key={alertTitle} alertTitle={alertTitle} showLoginBtn={alertTitle.includes("請先登入喔~") && true} history={props.history} />
-            }
-            <BreadCrumb currentPage={"綠色飲食 (吃得夠綠)"} />
-            <div className="island-wrapper">
-                <div className="island-wrapper-island">
-                    <div className="single-island"><img src={greenTour} /><h6>旅遊之島</h6></div>
-                    <div className="single-island"><img src={greenFood} className={themeId === "2" ? "currentIsland" : ""} /><h6>飲食之島</h6></div>
-                    <div className="single-island"><img src={greenHome} /><h6>居家之島</h6></div>
-                    <div className="single-island"><img src={greenShopping} /><h6>購物之島</h6></div>
-                    <div className="single-island"><img src={greenOffice} /><h6>辦公之島</h6></div>
-                </div>
-                <div className="dotted-line"></div>
-            </div>
-
             <img alt="綠色飲食-橫幅" title="綠色飲食-橫幅" className="w-100" src="../../../images/flip/food/topBanner.jpg" />
             <div className="container containerBox flip-tour">
                 <div className="">
@@ -260,12 +182,6 @@ function FoodScore(props, initialData) {
                     </div>
                 </div>
 
-
-
-
-            </div>
-            <SideBtn history={history} />
-            {/* <Footer /> */}
         </>
     );
 }
