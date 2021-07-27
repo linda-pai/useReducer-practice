@@ -7,5 +7,5 @@
 1. 紀錄
 2. 編輯
 3. 清除
+![localhost_3000_daily_score_get_score (2)](https://user-images.githubusercontent.com/66729413/127174462-cca4479b-9d3c-4828-9c09-6302f5ea13da.png)
 
-![index_02](https://user-images.githubusercontent.com/66729413/127173458-706a7cc2-b8b6-4687-b585-26f2d4ab5cdb.jpg)
